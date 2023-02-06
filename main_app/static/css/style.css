@@ -1,0 +1,26 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    background-color: rgb(211, 149, 67);
+}
+
+
+
+.card {
+    background-color: rgb(91, 183, 4);
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+.nav-wrapper {
+    background-color: rgb(91, 183, 4);
+}
+
+footer.page-footer {
+    padding-top: 0;
+    text-align: right;
+    background-color: rgb(91, 183, 4);
+}
