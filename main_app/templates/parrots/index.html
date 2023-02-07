@@ -5,16 +5,18 @@
 
 {% for parrot in parrots %}
     <div class="card">
-        <div class="card-content">
-            <span class="card-title">{{ parrot.name }}</span>
-            <p>Breed: {{ parrot.breed }}</p>
-            <p>Description: {{ parrot.description }}</p>
-            {% if parrot.age > 0 %}
-                <p>Age: {{ parrot.age }}</p>
-            {% else %}
-                <p>Age: Baby Bird</p>
-            {% endif %}
-        </div>
+        <a href="{% url 'detail' parrot.id %}">
+            <div class="card-content">
+                <span class="card-title">{{ parrot.name }}</span>
+                <p>Breed: {{ parrot.breed }}</p>
+                <p>Description: {{ parrot.description|linebreaks }}</p>
+                {% if parrot.age > 0 %}
+                    <p>Age: {{ parrot.age }}</p>
+                {% else %}
+                    <p>Age: Baby Bird</p>
+                {% endif %}
+            </div>
+        </a>
     </div>
 {% endfor %}
 
