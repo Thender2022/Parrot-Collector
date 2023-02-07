@@ -14,6 +14,10 @@
             <p>Age: Baby Bird</p>
         {% endif %}
     </div>
+    <div>
+        <a href="{% url 'parrots_update' parrot.id %}">Edit</a>
+        <a href="{% url 'parrots_delete' parrot.id %}">Delete</a>
+    </div>
 </div>
 
 {% endblock %}
