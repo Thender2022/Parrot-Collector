@@ -3,21 +3,63 @@
 
 <h1>Parrot Details</h1>
 
-<div class="card">
-    <div class="card-content">
+<div class="row">
+  <div class="col s6">
+    <div class="card">
+      <div class="card-content">
         <span class="card-title">{{ parrot.name }}</span>
         <p>Breed: {{ parrot.breed }}</p>
         <p>Description: {{ parrot.description|linebreaks }}</p>
         {% if parrot.age > 0 %}
-            <p>Age: {{ parrot.age }}</p>
+          <p>Age: {{ parrot.age }}</p>
         {% else %}
-            <p>Age: Baby Bird</p>
+          <p>Age: Baby Bird</p>
         {% endif %}
-    </div>
-    <div>
+      </div>
+      <div class="card-action">
         <a href="{% url 'parrots_update' parrot.id %}">Edit</a>
         <a href="{% url 'parrots_delete' parrot.id %}">Delete</a>
+      </div>
     </div>
+  </div>
+  <div class="col s6">
+    <form action="{% url 'add_feeding' parrot.id %}" method="POST">
+        {% csrf_token %}
+        {{ feeding_form.as_p }}
+        <input type="submit" class="btn" value="Add Feeding">
+    </form>
+    <br>
+    {% if parrot.fed_for_today %}
+        <div class="card-panel teal-text center-align">{{parrot.name}} has been fed all meals for today</div>
+    {% else %}
+        <div class="card_panel red-text cante_align">{{parrot.name}} might be hungry</div>
+    {% endif %}
+    <table class="striped">
+      <thead>
+        <tr><th>Date</th><th>Meal</th></tr>
+      </thead>
+      <tbody>
+        {% for feeding in parrot.feeding_set.all %}
+          <tr>
+            <td>{{feeding.date}}</td>
+            <td>{{feeding.get_meal_display}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </div>
 
+<script>
+    const dateEl = document.getElementById('id_date');
+    M.Datepicker.init(dateEl, {
+        format: 'yyyy-mm-dd',
+        setDefaultDate: new Date(),
+        setDefaultDate: true,
+        autoClose: true
+    });
+
+    const selectEl = document.getElementById('id_meal')
+    M.FormSelect.init(selectEl)
+</script>
 {% endblock %}
