@@ -10,11 +10,24 @@ MEALS = (
 )
 
 # Create your models here.
+class Jacket(models.Model):
+    name = models.CharField(max_length=50)
+    color = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('jackets_detail', kwargs={'pk': self.id})
+
 class Parrot(models.Model):
     name = models.CharField(max_length=100)
     breed = models.CharField(max_length=100)
     description = models.TextField(max_length=250)
     age = models.IntegerField()
+    jackets = models.ManyToManyField(Jacket)
+
+    
 
     def __str__(self):
         return self.name

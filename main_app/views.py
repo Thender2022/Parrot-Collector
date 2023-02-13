@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .models import Parrot
+from .models import Parrot, Jacket
+from django.views.generic import ListView, DetailView
 from .forms import FeedingForm
 
 # Create your views here.
@@ -18,9 +19,14 @@ def parrots_index(request):
 
 def parrots_detail(request, parrot_id):
     parrot = Parrot.objects.get(id=parrot_id)
+    id_list = parrot.jackets.all().values_list('id')
+    jackets_parrot_doesnt_have = Jacket.objects.exclude(id__in=id_list)
+    
     feeding_form = FeedingForm()
     return render(request, 'parrots/detail.html', {
-        'parrot': parrot, 'feeding_form': feeding_form
+        'parrot': parrot, 
+        'feeding_form': feeding_form,
+        'jackets': jackets_parrot_doesnt_have,
     })
 
 def add_feeding(request, parrot_id):
@@ -44,3 +50,14 @@ class ParrotUpdate(UpdateView):
 class ParrotDelete(DeleteView):
     model = Parrot
     success_url = '/parrots'
+
+class JacketList(ListView):
+    model = Jacket
+
+class JacketDetail(DetailView):
+    model = Jacket
+
+
+def assoc_jacket(request, parrot_id, jacket_id):
+    Parrot.objects.get(id=parrot_id).jackets.add(jacket_id)
+    return redirect('detail', parrot_id=parrot_id)
